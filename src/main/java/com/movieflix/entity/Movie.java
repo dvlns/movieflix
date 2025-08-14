@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "movie")
 public class Movie {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +34,7 @@ public class Movie {
     private Double rating;
 
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
@@ -40,16 +42,18 @@ public class Movie {
     private LocalDateTime updatedAt;
 
     @ManyToMany
-    @JoinTable(name = "movie_category",
-        joinColumns = @JoinColumn(name = "movie_id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id")
+    @JoinTable(
+            name = "movie_category",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "movie_streaming",
+    @JoinTable(
+            name = "movie_streaming",
             joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "straeaming_id")
+            inverseJoinColumns = @JoinColumn(name = "streaming_id")
     )
-    private List<Streaming> streamings;
+    private List<Streaming> streamings = new ArrayList<>();
 }
