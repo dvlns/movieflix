@@ -54,27 +54,31 @@ cd movieflix
 ### 2. Configure the Database
 This project uses Flyway, so you must configure your database credentials.
 
-1.  Create a PostgreSQL database (e.g., `movieflix_db`).
-2.  Open the `src/main/resources/application.properties` file.
-3.  Add your database URL, username, and password:
+1.  Create a PostgreSQL database (e.g., `movieflix`).
+2.  Open the `src/main/resources/application.yaml` file.
+3.  Ensure the configuration matches the following (adjust your `username` and `password` as needed):
 
-    ```properties
-    # PostgreSQL Datasource
-    spring.datasource.url=jdbc:postgresql://localhost:5432/movieflix_db
-    spring.datasource.username=your_postgres_user
-    spring.datasource.password=your_postgres_password
+    ```yaml
+    spring:
+      application:
+        name: movieflix
+      
+      datasource:
+        url: jdbc:postgresql://localhost:5432/movieflix
+        username: postgres
+        password: post
+        driver-class-name: org.postgresql.Driver
+        
+      jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        show-sql: true
+        
+      flyway:
+        enabled: true
 
-    # JPA / Hibernate
-    # We use 'validate' because Flyway handles the schema creation/migration
-    spring.jpa.hibernate.ddl-auto=validate
-    spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-
-    # Flyway
-    spring.flyway.enabled=true
-    
-    # JWT Secret (add a strong, random secret key)
-    # Example: you can generate one online
-    api.security.token.secret=YOUR_VERY_STRONG_SECRET_KEY_HERE
+    movieflix:
+      security:
+        secret: "palavra-secreta" # <-- IMPORTANT: Change this to a strong, random secret
     ```
 
 ### 3. Run the Application
